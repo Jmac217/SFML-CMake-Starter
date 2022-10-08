@@ -2,14 +2,14 @@
 
 int main()
 {
-    srand(static_cast<unsigned>(time(NULL)));
+    srand(static_cast<unsigned>(time(0)));
 
     Mac::Game game;
 
-    while(game.Running() && !game.EndGame())
+    while (game.running())
     {
+        // Loop
         game.update();
-
         game.render();
     }
 

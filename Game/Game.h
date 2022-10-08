@@ -1,67 +1,58 @@
 ﻿#include <iostream>
 #include <vector>
 #include <sstream>
+#include <ctime>
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+#include "Player.h"
+#include "Ball.h"
 
 #pragma once
 
 namespace Mac {
 
-	// Wrapper Class for "Game Engine"
-
 	struct Game
 	{
-		// Constructors and Destructors
 		Game();
 		virtual ~Game();
 
-		const bool Running() const;
-		const bool EndGame() const;
+		const bool& getEndgame() const;
 
-		// Member Functions
+		const bool running() const;
+		void pollEvents();
+
 		void update();
 		void render();
-		void pollEvents();
-		void updateMousePositions();
+		void renderGui(sf::RenderTarget* target);
+		void spawnBalls();
+		const int randomizeBallType() const;
+		void updatePlayer();
+		void updateCollision();
+		void updateGui();
 
 	private:
-		sf::RenderWindow* window;
 		sf::VideoMode videoMode;
-		sf::Event ev;
-
-		sf::Vector2i mousePosWindow;
-		sf::Vector2f mousePosView;
-
+		sf::RenderWindow* window;
+		sf::Event sfEvent;
 		sf::Font font;
-		sf::Text uiText;
+		sf::Text guiText;
+		sf::Text endGameText;
 
-		unsigned int points;
-		int health;
-		float enemySpawnTimer;
-		float enemySpawnTimerMax;
-		int maxEnemies;
-		bool mouseHeld;
+		std::vector<Ball> balls;
+
+		Player player;
+
 		bool endGame;
 
-		sf::RectangleShape enemy;
-		std::vector<sf::RectangleShape> Enemies;
-	private:
-		// Private Member Functions
+		int points;
+		int maxBalls;
+
+		float spawnTimerMax;
+		float spawnTimer;
+
 		void initVariables();
 		void initWindow();
-		void initEnemies();
-		void initFonts();
+		void initFont();
 		void initText();
-		void spawnEnemy();
-		void updateEnemies();
-		void renderEnemies(sf::RenderTarget& target);
-		void renderText(sf::RenderTarget& target);
-		void updateText();
 	};
 
 }
