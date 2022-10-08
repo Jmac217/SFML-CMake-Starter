@@ -25,17 +25,13 @@ call cmake -S . -B msvc -G "Visual Studio 17 2022"
 
 pause
 ```
-## Fonts are weird in this project!
+## Current Starters
+> `Main` Branch  
+> `git checkout Main`
+* [Catching Confetti](https://youtu.be/NGNrAu0GZV0)
+![SFML-CMake-Starter - Catching Confetti](https://i3.ytimg.com/vi/NGNrAu0GZV0/hqdefault.jpg "SFML-CMake-Starter - Catching Confetti")  
 
-* The `Game/CMakeLists.txt` file includes a folder called lib/ and what it contains has been copied from SFML's submodule out of the `extlibs/libs-msvc` folder. I copied them, but maybe I should have just left them in place and linked to them further, but that crosses some boundaries too. I don't have a perfect solution.
-* There is one commented line in `Game/CMakeLists.txt` that, if for some reason you want to open this project through the context menu, "Open with Visual Studio" to get the CMake stuff rolling. To build with the fonts in that configuration you will need to replace the forementioned comment and place a comment on the trailing line.
-
-```
-add_custom_target(copy_assets
-                    # Uncomment one to Copy fonts to msvc/ OR out/
-                    # unfortunately this is the only way I can get this to work
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
-                    ${CMAKE_CURRENT_BINARY_DIR}/Fonts # Visual Studio Generator
-                    #$<TARGET_FILE_DIR:Game>/Fonts # CMake Project
-)
-```
+> `MarbleCollect` Branch  
+> `git checkout MarbleCollect`
+* [Marble Collect](https://youtu.be/aNrEoSC1PGc)
+  ![SFML-CMake-Starter - Marble Collect](https://i3.ytimg.com/vi/aNrEoSC1PGc/hqdefault.jpg "SFML-CMake-Starter - Marble Collect")
