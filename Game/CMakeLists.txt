@@ -22,10 +22,6 @@ add_executable (		Game		# Game Executable
 									"Main.cpp"
 									"Game.cpp"
 									"Game.h"
-									"Player.cpp"
-									"Player.h"
-									"Ball.cpp"
-									"Ball.h"
 )
 
 add_dependencies(		Game		copy_fonts)
