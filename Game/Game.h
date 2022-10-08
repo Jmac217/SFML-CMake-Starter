@@ -3,6 +3,9 @@
 #include <sstream>
 #include <ctime>
 
+#include<SFML/Graphics.hpp>
+#include<SFML/System.hpp>
+
 #pragma once
 
 namespace Mac {
@@ -12,8 +15,14 @@ namespace Mac {
 		Game();
 		virtual ~Game();
 
-	private:
+		void Run();
+		void Update();
+		void Render();
 
+	private:
+		void initWindow();
+
+		sf::RenderWindow* window;
 	};
 
 }
