@@ -1,41 +1,44 @@
-﻿# Game /
+# Game /
 # CMakeList.txt
-#
-cmake_minimum_required(	VERSION 3.23)
 
-link_directories(		# SFML
-						# msvc libs copied from submodule
+cmake_minimum_required(	VERSION 	3.23)
+
+link_directories(					# Dependencies
+									# copied from `extlibs/libs-msvc`
 									${CMAKE_CURRENT_LIST_DIR}/lib
 )
 
-add_custom_target(		copy_assets
-									# Uncomment one to Copy fonts to msvc/ OR out/
-									# unfortunately this is the only way I can get this to work
+add_custom_target(		copy_fonts	# Visual Studio Generator from CMake [-G]
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
-									${CMAKE_CURRENT_BINARY_DIR}/Fonts # Visual Studio Generator
-									#$<TARGET_FILE_DIR:Game>/Fonts # CMake Project
+									${CMAKE_CURRENT_BINARY_DIR}/Fonts
+
+									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
+									$<TARGET_FILE_DIR:Game>/Fonts
 )
 
-# Game
-add_executable (		Game
+									
+add_executable (		Game		# Game Executable
 									"Main.cpp"
 									"Game.cpp"
 									"Game.h"
 )
 
-add_dependencies(		Game		copy_assets)
+add_dependencies(		Game		copy_fonts)
 
 set_property(			TARGET 		Game
 						PROPERTY 	CXX_STANDARD 20
 )
 
-# SFML
-add_subdirectory(					"vendor/SFML")
+									
+add_subdirectory(					# Submodules
+									"vendor/SFML"
+)
 
-target_link_libraries(
+target_link_libraries(				# Links
 						Game 	
 							PUBLIC
-									# System Links
+									# System
 									opengl32
 									gdi32
 									ws2_32
