@@ -3,8 +3,9 @@
 namespace Mac {
 	Player::Player(float x, float y)
 	{
-		this->shape.setPosition(x, y);
+		this->shape.setPosition(400, 600);
 		this->movementSpeed = 10.0f;
+		this->size = 10.0f;
 
 		this->initVariables();
 		this->initShape();
@@ -53,6 +54,7 @@ namespace Mac {
 		{
 			this->shape.move(0.0f, this->movementSpeed);
 		}
+
 	}
 
 	void Player::updateWindowBoundsCollission(const sf::RenderTarget* target)
@@ -92,7 +94,14 @@ namespace Mac {
 			this->hp += health;
 
 		if (this->hp > this->hpMax)
+		{
 			this->hp = this->hpMax;
+		}
+	}
+
+	float Player::gainSize(float size)
+	{
+		return this->size += size;
 	}
 
 	void Player::initVariables()
@@ -105,7 +114,7 @@ namespace Mac {
 	void Player::initShape()
 	{
 		this->shape.setFillColor(sf::Color::Yellow);
-		this->shape.setSize(sf::Vector2f(100.0f, 100.0f));
+		this->shape.setSize(sf::Vector2f(10.0f, 10.0f));
 	}
 
 }

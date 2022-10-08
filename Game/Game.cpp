@@ -22,7 +22,6 @@ namespace Mac {
 
 	const bool Game::running() const
 	{
-		// return this->window->isOpen() && !this->getEndgame(); // close immediately
 		return this->window->isOpen();
 	}
 
@@ -57,6 +56,8 @@ namespace Mac {
 			this->updateCollision();
 
 			this->updateGui();
+
+			
 		}
 	}
 
@@ -124,6 +125,7 @@ namespace Mac {
 	{
 		for (size_t i = 0; i < this->balls.size(); i++)
 		{
+			this->balls[i].update();
 			if (this->player
 				.getShape()
 				.getGlobalBounds()
@@ -137,6 +139,7 @@ namespace Mac {
 				{
 				case BallTypes::DEFAULT:
 					this->points++;
+					this->player.shape.setSize(sf::Vector2f(this->player.gainSize(1.0f), this->player.gainSize(1.0f)));
 					break;
 				case BallTypes::DAMAGING:
 					this->player.takeDamage(1);
@@ -148,6 +151,7 @@ namespace Mac {
 
 				this->balls.erase(this->balls.begin() + i);
 			}
+			
 		}
 	}
 
@@ -155,6 +159,7 @@ namespace Mac {
 	{
 		std::stringstream ss;
 		ss	<< "Points: " << this->points
+			<< "\n"
 			<< "Health: " << this->player.getHP()
 			<< " / " << this->player.getHPMax()
 			<< std::endl;
@@ -164,9 +169,9 @@ namespace Mac {
 	void Game::initVariables()
 	{
 		this->endGame = false;
-		this->spawnTimerMax = 10.0f;
+		this->spawnTimerMax = 50.0f;
 		this->spawnTimer = this->spawnTimerMax;
-		this->maxBalls = 10;
+		this->maxBalls = 20;
 		this->points = 0;
 	}
 
@@ -195,7 +200,7 @@ namespace Mac {
 		this->endGameText.setFont(this->font);
 		this->endGameText.setFillColor(sf::Color::Red);
 		this->endGameText.setCharacterSize(60);
-		this->endGameText.setPosition(sf::Vector2f(20, 300));
+		this->endGameText.setPosition(sf::Vector2f(100, 300));
 		this->endGameText.setString("GAME OVER");
 	}
 

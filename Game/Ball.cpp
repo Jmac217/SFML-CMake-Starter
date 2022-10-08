@@ -20,7 +20,7 @@ namespace Mac {
 
 	void Ball::update()
 	{
-
+		this->shape.move(sf::Vector2f(0.0f, 1.0f));
 	}
 
 	void Ball::render(sf::RenderTarget* target)
@@ -40,7 +40,7 @@ namespace Mac {
 		switch (this->type)
 		{
 		case DEFAULT:
-			color = sf::Color::White;
+			color = sf::Color(rand() % 200 + 55, rand() % 200 + 55, rand() % 200 + 55);
 			break;
 		case DAMAGING:
 			color = sf::Color::Red;
@@ -50,8 +50,7 @@ namespace Mac {
 			break;
 		}
 		this->shape.setPosition(sf::Vector2f(static_cast<float>(rand() % window.getSize().x - this->shape.getGlobalBounds().width),
-													static_cast<float>(rand() % window.getSize().y - this->shape.getGlobalBounds().height)));
-		//sf::Color color(rand() % 255 + 1, rand() % 255 + 1, rand() % 255 + 1);
+													static_cast<float>(this->shape.getGlobalBounds().height)));
 		this->shape.setFillColor(color);
 	}
 

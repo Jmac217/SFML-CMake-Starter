@@ -13,6 +13,7 @@ namespace Mac {
 		~Player();
 
 		const sf::RectangleShape& getShape() const;
+		sf::RectangleShape shape;
 
 		void update(const sf::RenderTarget* target);
 		void render(sf::RenderTarget* target);
@@ -24,13 +25,13 @@ namespace Mac {
 
 		void takeDamage(const int damage);
 		void gainHealth(const int health);
-
+		float gainSize(float size);
 	private:
-		sf::RectangleShape shape;
 
 		int hp;
 		int hpMax;
 		float movementSpeed;
+		float size;
 
 		void initVariables();
 		void initShape();
