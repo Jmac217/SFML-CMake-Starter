@@ -28,10 +28,22 @@ pause
 ## Current Starters
 > `Main` Branch  
 > `git checkout Main`
-* [Catching Confetti](https://youtu.be/NGNrAu0GZV0)
+* [Catching Confetti](https://youtu.be/NGNrAu0GZV0)  
+
 ![SFML-CMake-Starter - Catching Confetti](https://i3.ytimg.com/vi/NGNrAu0GZV0/hqdefault.jpg "SFML-CMake-Starter - Catching Confetti")  
+
+<hr/>
 
 > `MarbleCollect` Branch  
 > `git checkout MarbleCollect`
-* [Marble Collect](https://youtu.be/aNrEoSC1PGc)
-  ![SFML-CMake-Starter - Marble Collect](https://i3.ytimg.com/vi/aNrEoSC1PGc/hqdefault.jpg "SFML-CMake-Starter - Marble Collect")
+* [Marble Collect](https://youtu.be/aNrEoSC1PGc)  
+
+![SFML-CMake-Starter - Marble Collect](https://i3.ytimg.com/vi/aNrEoSC1PGc/hqdefault.jpg "SFML-CMake-Starter - Marble Collect")
+
+<hr/>
+
+> `SpaceShooter` Branch  
+> `git checkout SpaceShooter`  
+* [Shape Shooter](https://youtu.be/V2PyRu0lt9U)  
+
+![SFML-CMake-Starter - Shape Shooter](https://i3.ytimg.com/vi/V2PyRu0lt9U/hqdefault.jpg "SFML-CMake-Starter - Shape Shooter")
