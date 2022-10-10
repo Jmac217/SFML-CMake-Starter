@@ -1,24 +1,28 @@
-# SFML-One
+![SFML-CMake-Starter](https://raw.githubusercontent.com/Jmac217/SFML-CMake-Starter/BlankStarter/Resources/CMakeSFMLStarter.png "SFML-CMake-Starter")
+
+# SFML-CMake-Starter
 
 ### The purpose of this repo is to allow anyone to jump into SFML *with* CMake and play around a little. I also wanted to do this for myself obviously so it's just as finished as I need it to be for my purposes. Feel free to take this and run with it! My SFML Fork is just set to build SFML as a static project for your own personal use cases!
+
+### This Project started as a repo to follow along with [Suraj Sharma](https://www.youtube.com/playlist?list=PL6xSOsbVA1eb_QqMTTcql_3PdOiE928up) with the simple addition of CMake. Now that I'm at the end of that tutorial series the repo is growing to host each of the game samples I make through my studies. Keeping them in the same repo on seperate branches allows me to cherry pick each feature added but comes with its own headaches.
+
 ##### Enjoy!
-<br/>
+
 <hr/>
 
 Download and install  
 * [Git](https://git-scm.com/downloads)
 * [CMake](https://cmake.org/download/)
 
-Clone this repo  
-> from a Visual Studio Command Prompt (any terminal *should* be fine)
+Clone this repo
 ```
-git clone https://github.com/Jmac217/SFML-One.git
+git clone https://github.com/Jmac217/SFML-CMake-Starter.git
 ```
 
 run `setup.bat`
 > here are it's contents for the curious
 ```
-@TITLE SFML-Setup
+@TITLE CMake-SFML-Starter-Setup
 
 call git submodule update --init --recursive
 call cmake -S . -B msvc -G "Visual Studio 17 2022"
@@ -26,8 +30,17 @@ call cmake -S . -B msvc -G "Visual Studio 17 2022"
 pause
 ```
 ## Current Starters
-> `Main` Branch  
-> `git checkout Main`
+
+> ### Default Branch
+> `BlankStarter` Branch  
+> `git checkout BlankStarter`
+
+  
+
+<hr/>
+
+> `CatchingConfetti` Branch  
+> `git checkout CatchingConfetti`
 * [Catching Confetti](https://youtu.be/NGNrAu0GZV0)  
 
 ![SFML-CMake-Starter - Catching Confetti](https://i3.ytimg.com/vi/NGNrAu0GZV0/hqdefault.jpg "SFML-CMake-Starter - Catching Confetti")  
