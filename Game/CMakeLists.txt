@@ -19,6 +19,8 @@ add_custom_target(		copy_fonts	# Visual Studio Generator from CMake [-G]
 
 									
 add_executable (		Game		# Game Executable
+									"pch.cpp"
+									"pch.h"
 									"Main.cpp"
 									"Game.cpp"
 									"Game.h"
@@ -33,6 +35,12 @@ set_property(			TARGET 		Game
 									
 add_subdirectory(					# Submodules
 									"vendor/SFML"
+)
+
+target_precompile_headers(
+						Game
+							PUBLIC
+									"pch.h"
 )
 
 target_link_libraries(				# Links
