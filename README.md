@@ -24,9 +24,7 @@ git clone https://github.com/Jmac217/SFML-CMake-Starter.git
 * [Catching Confetti](https://youtu.be/NGNrAu0GZV0)  
 
 ![SFML-CMake-Starter - Catching Confetti](https://i3.ytimg.com/vi/NGNrAu0GZV0/hqdefault.jpg "SFML-CMake-Starter - Catching Confetti")  
-> `Platformer` Branch  
-> `git checkout Platformer`  
-* [Platformer](https://youtu.be/v4phNDx_Jdo)  
+ 
 
 <hr/>
 
