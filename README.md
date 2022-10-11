@@ -19,6 +19,16 @@ Clone this repo
 git clone https://github.com/Jmac217/SFML-CMake-Starter.git
 ```
 
+> `MarbleCollect` Branch  
+> `git checkout MarbleCollect`
+* [Marble Collect](https://youtu.be/aNrEoSC1PGc)  
+
+![SFML-CMake-Starter - Marble Collect](https://i3.ytimg.com/vi/aNrEoSC1PGc/hqdefault.jpg "SFML-CMake-Starter - Marble Collect")
+
+<hr/>
+
+call `cmake -S . -B build`  
+*or*  
 run `setup.bat`
 > here are it's contents for the curious
 ```
@@ -35,7 +45,13 @@ pause
 > `BlankStarter` Branch  
 > `git checkout BlankStarter`
 
-  
+<hr/>
+
+> `Platformer` Branch  
+> `git checkout Platformer`
+* [Platformer](https://youtu.be/v4phNDx_Jdo)  
+
+![SFML-CMake-Starter - Platformer](https://i3.ytimg.com/vi/v4phNDx_Jdo/maxresdefault.jpg "SFML-CMake-Starter - Platformer")
 
 <hr/>
 
@@ -44,14 +60,6 @@ pause
 * [Catching Confetti](https://youtu.be/NGNrAu0GZV0)  
 
 ![SFML-CMake-Starter - Catching Confetti](https://i3.ytimg.com/vi/NGNrAu0GZV0/hqdefault.jpg "SFML-CMake-Starter - Catching Confetti")  
-
-<hr/>
-
-> `MarbleCollect` Branch  
-> `git checkout MarbleCollect`
-* [Marble Collect](https://youtu.be/aNrEoSC1PGc)  
-
-![SFML-CMake-Starter - Marble Collect](https://i3.ytimg.com/vi/aNrEoSC1PGc/hqdefault.jpg "SFML-CMake-Starter - Marble Collect")
 
 <hr/>
 
