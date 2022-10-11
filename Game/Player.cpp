@@ -98,6 +98,11 @@ namespace Mac {
 			this->move(1.0f, 0.0f);
 			this->animationState = PLAYER_STATE::MOVING_RIGHT;
 		}
+		else
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+		{
+			this->animationState = PLAYER_STATE::JUMPING;
+		}
 	}
 
 	void Player::updateAnimations()
@@ -115,7 +120,7 @@ namespace Mac {
 				this->animationTimer.restart();
 				this->sprite.setTextureRect(this->currentFrame);
 			}
-			this->sprite.setScale(7, 7);
+			this->sprite.setScale(this->scale);
 			this->sprite.setOrigin(0.0f, 0.0f);
 		}
 		else
@@ -132,7 +137,7 @@ namespace Mac {
 				this->animationTimer.restart();
 				this->sprite.setTextureRect(this->currentFrame);
 			}
-				this->sprite.setScale(7, 7);
+				this->sprite.setScale(this->scale);
 				this->sprite.setOrigin(0.0f, 0.0f);
 		}
 		else
@@ -149,11 +154,41 @@ namespace Mac {
 				this->animationTimer.restart();
 				this->sprite.setTextureRect(this->currentFrame);
 			}
-			this->sprite.setScale(-7, 7);
-			this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 7.0f, 0.0f);
+			this->sprite.setScale(-this->scale.x, this->scale.y);
+			this->sprite.setOrigin(this->sprite.getGlobalBounds().width / this->scale.x, 0.0f);
+		}
+		else
+		if (this->animationState == PLAYER_STATE::JUMPING)
+		{
+			if (this->animationTimer.getElapsedTime().asSeconds() >= 0.125f
+				|| this->getAnimationSwitch())
+			{
+				this->currentFrame.top = 100.0f;
+				this->currentFrame.left += 40.0f;
+				if (this->currentFrame.left >= 80.0f)
+					this->currentFrame.left = 0.0f;
+				if (this->jumping)
+				{
+					this->currentFrame.top = 150.0f;
+					this->currentFrame.left = 0.0f;
+				}
+
+				this->animationTimer.restart();
+				this->sprite.setTextureRect(this->currentFrame);
+			}
+			this->sprite.setScale(this->scale);
+			this->sprite.setOrigin(0.0f, 0.0f);
+			if (!jumping)
+			{
+				this->velocity.y -= 100;
+				this->jumping = true;
+			}
 		}
 		else
 			this->animationTimer.restart();
+
+		// jump
+		// this->velocity.y -= 50;
 	}
 
 	void Player::update()
@@ -166,6 +201,16 @@ namespace Mac {
 	void Player::render(sf::RenderTarget& target)
 	{
 		target.draw(this->sprite);
+	}
+
+	void Player::canJump()
+	{
+		this->jumping = false;
+	}
+
+	sf::Vector2f Player::setScale(float x, float y)
+	{
+		return scale;
 	}
 
 	void Player::initVariables()
@@ -183,7 +228,7 @@ namespace Mac {
 		this->sprite.setTexture(this->textureSheet);
 		this->currentFrame = sf::IntRect(0, 0, 40, 50);
 		this->sprite.setTextureRect(this->currentFrame);
-		this->sprite.setScale(7, 7);
+		this->sprite.setScale(this->scale);
 	}
 
 	void Player::initAnimations()
@@ -197,9 +242,11 @@ namespace Mac {
 		this->velocityMax = 22.0f;
 		this->velocityMin = 1.0f;
 		this->acceleration = 4.0f;
-		this->drag = 0.83f;
-		this->gravity = 4.0f;
+		this->drag = 0.78f;
+		this->gravity = 2.0f;
 		this->velocityMaxY = 15.0f;
+		this->jumping = false;
+		this->scale = sf::Vector2f(3.0f, 3.0f);
 	}
 
 }

@@ -31,16 +31,20 @@ namespace Mac {
 		void update();
 		void render(sf::RenderTarget& target);
 
+		void canJump();
+		sf::Vector2f setScale(float x, float y);
 	private:
 		sf::Sprite sprite;
 		sf::Texture textureSheet;
 		sf::IntRect currentFrame;
 		sf::Clock animationTimer;
 		sf::Vector2f velocity;
+		sf::Vector2f scale;
 
 		short animationState;
 
 		bool moving;
+		bool jumping;
 		bool animationSwitch;
 
 		float velocityMax;

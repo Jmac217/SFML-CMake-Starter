@@ -58,6 +58,7 @@ namespace Mac {
 		//Collision bottom of screen
 		if (this->player->getPosition().y + this->player->getGlobalBounds().height > this->window.getSize().y)
 		{
+			this->player->canJump();
 			this->player->resetVelocityY();
 			this->player->setPosition(
 				this->player->getPosition().x,
