@@ -3,8 +3,17 @@
 
 int main()
 {
-    std::cout << "SFML Starter Template Initialized...!" << std::endl;
+    srand(time(0));
 
-    std::cin.get();
+    std::cout << "Platformer Initialized...!\n";
+
+    Mac::Game game;
+
+    while (game.getWindow().isOpen())
+    {
+        game.update();
+        game.render();
+    }
+
     return 0;
 }

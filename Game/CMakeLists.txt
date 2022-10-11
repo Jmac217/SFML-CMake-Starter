@@ -11,10 +11,16 @@ link_directories(					# Dependencies
 add_custom_target(		copy_fonts	# Visual Studio Generator from CMake [-G]
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
 									${CMAKE_CURRENT_BINARY_DIR}/Fonts
+									# Copy Textures/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
+									${CMAKE_CURRENT_BINARY_DIR}/Textures
 
 									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
 									$<TARGET_FILE_DIR:Game>/Fonts
+									# Copy Textures/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
+									$<TARGET_FILE_DIR:Game>/Textures
 )
 
 									
@@ -24,6 +30,12 @@ add_executable (		Game		# Game Executable
 									"Main.cpp"
 									"Game.cpp"
 									"Game.h"
+									"Player.cpp"
+									"Player.h"
+									"Tile.cpp"
+									"Tile.h"
+									"TileMap.cpp"
+									"TileMap.h"
 )
 
 add_dependencies(		Game		copy_fonts)
