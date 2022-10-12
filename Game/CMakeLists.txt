@@ -34,6 +34,8 @@ add_executable (		Game		# Game Executable
 									"Main.cpp"
 									"Game.cpp"
 									"Game.h"
+									"Window.cpp"
+									"Window.h"
 )
 
 add_dependencies(		Game		copy_assets)
