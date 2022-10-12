@@ -21,7 +21,7 @@ namespace Mac {
 
 	void Window::BeginDraw()
 	{
-		m_window.clear(sf::Color::Black);
+		m_window.clear(sf::Color(40, 40, 50));
 	}
 
 	void Window::EndDraw()
@@ -34,10 +34,20 @@ namespace Mac {
 		sf::Event event;
 		while (m_window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed) { m_isDone = true; }
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F5)
+			if (event.type == sf::Event::Closed){
+				m_isDone = true;
+			}
+			else if (event.type == sf::Event::KeyPressed)
 			{
-				ToggleFullscreen();
+				if (event.key.code == sf::Keyboard::F5)
+				{
+					ToggleFullscreen();
+				}
+				else if
+					(event.key.code == sf::Keyboard::Escape)
+				{
+					m_isDone = true;
+				}
 			}
 		}
 	}
@@ -50,6 +60,11 @@ namespace Mac {
 	bool Window::IsFullscreen()
 	{
 		return m_isFullscreen;
+	}
+
+	sf::RenderWindow* Window::GetRenderWindow()
+	{
+		return &m_window;
 	}
 
 	sf::Vector2u Window::GetWindowSize()

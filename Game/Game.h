@@ -1,5 +1,8 @@
 ﻿#include "pch.h"
 #include "Window.h"
+#include "World.h"
+#include "Snake.h"
+#include "Textbox.h"
 
 #pragma once
 
@@ -8,27 +11,24 @@ namespace Mac {
 	struct Game
 	{
 		Game();
-		~Game() = default;
+		~Game();
 
 		void HandleInput();
 		void Update();
 		void Render();
 
-		Window* GetWindow();
-
 		sf::Time GetElapsed();
-
 		void RestartClock();
-	private:
-		void MoveBall();
 
+		Window* GetWindow();
+	private:
 		Window m_window;
 		sf::Clock m_clock;
-		sf::Time m_elapsed;
+		float m_elapsed;
 
-		sf::Texture m_ballTexture;
-		sf::Sprite m_ballSprite;
-		sf::Vector2i m_increment;
+		World m_world;
+		Snake m_snake;
+		Textbox m_textbox;
 	};
 
 }

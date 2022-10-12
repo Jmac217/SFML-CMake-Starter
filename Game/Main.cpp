@@ -4,6 +4,7 @@
 int main(int argc, char* argv[])
 {
 	Mac::Game game;
+
 	while (!game.GetWindow()->IsDone())
 	{
 		game.HandleInput();
@@ -11,6 +12,4 @@ int main(int argc, char* argv[])
 		game.Render();
 		game.RestartClock();
 	}
-
-	std::cin.get();
 }

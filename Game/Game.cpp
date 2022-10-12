@@ -4,34 +4,90 @@
 namespace Mac {
 
 	Game::Game()
-		: m_window("SFML Ch 2", sf::Vector2u(800, 600))
+		: m_window("Snake", sf::Vector2u(800, 600))
+		, m_snake(m_world.GetBlockSize(), &m_textbox)
+		, m_world(sf::Vector2u(800, 600))
 	{
-		RestartClock();
-		srand(time(NULL));
+		m_clock.restart();
+		srand(time(nullptr));
 
-		m_ballTexture.loadFromFile("Textures/Ball.png");
-		m_ballSprite.setTexture(m_ballTexture);
-		m_increment = sf::Vector2i(400, 400);
+		m_textbox.Setup(
+			5,						// links
+			25,						// size
+			350,					// width
+			sf::Vector2f(227, 35)	// position
+		);
+		m_elapsed = 0.0f;
+
+		m_textbox.Add("Welcome to SFML Snake!\nUse the W A S D keys\nOr the Arrow Keys to move\nApple Seed: " + std::to_string(time(nullptr)));
 	}
+
+	Game::~Game() {}
 
 	void Game::HandleInput()
 	{
-		// Input Handling
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+			|| (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)))
+			&& m_snake.GetPhysicalDirection() != Direction::Down)
+		{
+			m_snake.SetDirection(Direction::Up);
+		}
+		else if
+			((sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+			|| (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
+			&& m_snake.GetPhysicalDirection() != Direction::Up)
+		{
+			m_snake.SetDirection(Direction::Down);
+		}
+		else if
+			((sf::Keyboard::isKeyPressed(sf::Keyboard::D)
+			|| (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
+			&& m_snake.GetPhysicalDirection() != Direction::Left)
+		{
+			m_snake.SetDirection(Direction::Right);
+		}
+		else if
+			((sf::Keyboard::isKeyPressed(sf::Keyboard::A)
+			|| (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)))
+			&& m_snake.GetPhysicalDirection() != Direction::Right)
+		{
+			m_snake.SetDirection(Direction::Left);
+		}
 	}
 
 	void Game::Update()
 	{
 		m_window.Update();
-		MoveBall();
+		float timestep = 1.0f / m_snake.GetSpeed();
+		if (m_elapsed >= timestep)
+		{
+			m_snake.Tick();
+			m_world.Update(m_snake);
+			m_elapsed -= timestep;
+			if (m_snake.HasLost())
+			{
+				m_textbox.Add("Game Over! Score: "
+					+ std::to_string((long long)m_snake.GetScore()));
+				m_snake.Reset();
+			}
+		}
 	}
 
 	void Game::Render()
 	{
 		m_window.BeginDraw();
 
-		m_window.Draw(m_ballSprite);
+		// Draw
+		m_world.Render(*m_window.GetRenderWindow());
+		m_snake.Render(*m_window.GetRenderWindow());
+		m_textbox.Render(*m_window.GetRenderWindow());
 
 		m_window.EndDraw();
+	}
+
+	sf::Time Game::GetElapsed()
+	{
+		return m_clock.getElapsedTime();
 	}
 
 	Window* Game::GetWindow()
@@ -39,38 +95,8 @@ namespace Mac {
 		return &m_window;
 	}
 
-	sf::Time Game::GetElapsed()
-	{
-		return m_elapsed;
-	}
-
 	void Game::RestartClock()
 	{
-		m_elapsed = m_clock.restart();
-	}
-
-	void Game::MoveBall()
-	{
-		sf::Vector2u l_windSize = m_window.GetWindowSize();
-		sf::Vector2u l_textSize = m_ballTexture.getSize();
-
-		if ((m_ballSprite.getPosition().x >
-			l_windSize.x - l_textSize.x && m_increment.x > 0) ||
-			(m_ballSprite.getPosition().x < 0 && m_increment.x < 0)) {
-			m_increment.x = -m_increment.x;
-		}
-
-		if ((m_ballSprite.getPosition().y >
-			l_windSize.y - l_textSize.y && m_increment.y > 0) ||
-			(m_ballSprite.getPosition().y < 0 && m_increment.y < 0)) {
-			m_increment.y = -m_increment.y;
-		}
-
-		float fElapsed = m_elapsed.asSeconds();
-
-		m_ballSprite.setPosition(
-			m_ballSprite.getPosition().x + (m_increment.x * fElapsed),
-			m_ballSprite.getPosition().y + (m_increment.y * fElapsed)
-		);
+		m_elapsed += m_clock.restart().asSeconds();
 	}
 }
