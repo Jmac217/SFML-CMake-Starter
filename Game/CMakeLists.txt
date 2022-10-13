@@ -17,6 +17,10 @@ add_custom_target(		copy_assets	# Visual Studio Generator from CMake [-G]
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
 									${CMAKE_CURRENT_BINARY_DIR}/Textures
 
+									# Copy Resources/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Resources
+									${CMAKE_CURRENT_BINARY_DIR}/Resources
+
 									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
 									# Copy Fonts/
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
@@ -25,6 +29,10 @@ add_custom_target(		copy_assets	# Visual Studio Generator from CMake [-G]
 									# Copy Textures/
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
 									$<TARGET_FILE_DIR:Game>/Textures
+
+									# Copy Resources/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Resources
+									$<TARGET_FILE_DIR:Game>/Resources
 )
 
 									
@@ -36,6 +44,8 @@ add_executable (		Game		# Game Executable
 									"Game.h"
 									"Window.cpp"
 									"Window.h"
+									"EventManager.cpp"
+									"EventManager.h"
 )
 
 add_dependencies(		Game		copy_assets)
