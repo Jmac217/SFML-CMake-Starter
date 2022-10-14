@@ -8,6 +8,6 @@ int main(int argc, char* argv[])
 	{
 		game.Update();
 		game.Render();
-		game.RestartClock();
+		game.LateUpdate();
 	}
 }

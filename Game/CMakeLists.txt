@@ -46,6 +46,18 @@ add_executable (		Game		# Game Executable
 									"Window.h"
 									"EventManager.cpp"
 									"EventManager.h"
+									"BaseState.h"
+									"SharedContext.h"
+									"StateManager.cpp"
+									"StateManager.h"
+									"State_Game.cpp"
+									"State_Game.h"
+									"State_Intro.cpp"
+									"State_Intro.h"
+									"State_Paused.cpp"
+									"State_Paused.h"
+									"State_MainMenu.cpp"
+									"State_MainMenu.h"
 )
 
 add_dependencies(		Game		copy_assets)

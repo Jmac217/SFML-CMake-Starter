@@ -4,10 +4,10 @@
 
 namespace Mac {
 
-	struct Window
-	{
+	class Window {
+	public:
 		Window();
-		Window(const sf::String& title, const sf::Vector2u& size);
+		Window(const std::string& title, const sf::Vector2u& size);
 		~Window();
 
 		void BeginDraw();
@@ -25,7 +25,6 @@ namespace Mac {
 		sf::RenderWindow* GetRenderWindow();
 		EventManager* GetEventManager();
 		sf::Vector2u GetWindowSize();
-
 	private:
 		void Setup(const std::string& title, const sf::Vector2u& size);
 		void Create();
@@ -34,7 +33,6 @@ namespace Mac {
 		EventManager m_eventManager;
 		sf::Vector2u m_windowSize;
 		std::string m_windowTitle;
-
 		bool m_isDone;
 		bool m_isFullscreen;
 		bool m_isFocused;

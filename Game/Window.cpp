@@ -3,13 +3,11 @@
 
 namespace Mac {
 
-	Window::Window()
-	{
+	Window::Window() {
 		Setup("Window", sf::Vector2u(640, 480));
 	}
 
-	Window::Window(const sf::String& title, const sf::Vector2u& size)
-	{
+	Window::Window(const std::string& title, const sf::Vector2u& size) {
 		Setup(title, size);
 	}
 
@@ -103,8 +101,8 @@ namespace Mac {
 		m_isFocused = true;
 		m_window.setFramerateLimit(60);
 
-		m_eventManager.AddCallback("Fullscreen_toggle", &Window::ToggleFullscreen,	this);
-		m_eventManager.AddCallback("Window_close",		&Window::Close,				this);
+		m_eventManager.AddCallback(StateType(0), "Fullscreen_toggle", & Window::ToggleFullscreen, this);
+		m_eventManager.AddCallback(StateType(0), "Window_close", &Window::Close, this);
 
 		Create();
 	}

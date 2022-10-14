@@ -2,21 +2,17 @@
 #include "EventManager.h"
 
 namespace Mac {
-
     
 	EventManager::EventManager()
-		: m_hasFocus(true)
+		: m_currentState(StateType(0))
+		, m_hasFocus(true)
 	{
 		LoadBindings();
 	}
 
-	EventManager::~EventManager()
-	{
-		for (auto& i : m_bindings)
-		{
-			delete i.second;
-			i.second = nullptr;
-		}
+	EventManager::~EventManager() {
+		for (auto& itr : m_bindings)
+			delete itr.second;
 	}
 
 	bool EventManager::AddBinding(Binding* l_binding)
@@ -30,14 +26,19 @@ namespace Mac {
 	bool EventManager::RemoveBinding(std::string l_name)
 	{
 		auto i = m_bindings.find(l_name);
+		
 		if (i == m_bindings.end())
-		{
 			return false;
-		}
+
 		delete i->second;
 		m_bindings.erase(i);
 
 		return true;
+	}
+
+	void EventManager::SetCurrentState(StateType l_state)
+	{
+		m_currentState = l_state;
 	}
 
 	void EventManager::SetFocus(const bool& l_focus)
@@ -129,9 +130,8 @@ namespace Mac {
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(e.second.m_code)))
 						{
 							if (bind->m_details.m_keyCode != -1)
-							{
 								bind->m_details.m_keyCode = e.second.m_code;
-							}
+							
 							++(bind->count);
 						}
 						break;
@@ -140,9 +140,8 @@ namespace Mac {
 						if (sf::Mouse::isButtonPressed(sf::Mouse::Button(e.second.m_code)))
 						{
 							if (bind->m_details.m_keyCode != -1)
-							{
 								bind->m_details.m_keyCode = e.second.m_code;
-							}
+							
 							++(bind->count);
 						}
 						break;
@@ -152,17 +151,29 @@ namespace Mac {
 				}
 			}
 
-			if (bind->m_events.size() == bind->count)
-			{
-				auto callItr = m_callbacks.find(bind->m_name);
-				if (callItr != m_callbacks.end())
-				{
-					callItr->second(&bind->m_details);
+			if (bind->m_events.size() == bind->count) {
+				auto stateCallbacks = m_callbacks.find(m_currentState);
+				auto otherCallbacks = m_callbacks.find(StateType(0));
+
+				if (stateCallbacks != m_callbacks.end()) {
+					auto i = stateCallbacks->second.find(bind->m_name);
+					if (i != stateCallbacks->second.end()) {
+						// Pass in information about events.
+						i->second(&bind->m_details);
+					}
 				}
 
-				bind->count = 0;
-				bind->m_details.Clear();
+				if (otherCallbacks != m_callbacks.end()) {
+					auto i = otherCallbacks->second.find(bind->m_name);
+					if (i != otherCallbacks->second.end()) {
+						// Pass in information about events.
+						i->second(&bind->m_details);
+					}
+				}
 			}
+
+			bind->count = 0;
+			bind->m_details.Clear();
 		}
 	}
 
@@ -210,8 +221,16 @@ namespace Mac {
 				}
 
 				EventType type = EventType(stoi(keyval.substr(start, end - start)));
-				int code = stoi(keyval.substr(end + delimiter.length(),
-					keyval.find(delimiter, end + delimiter.length())));
+				int code = stoi(
+					keyval.substr(
+						end + delimiter.length(),
+						keyval.find(
+							delimiter,
+							end + delimiter.length()
+						)
+					)
+				);
+
 				EventInfo eventInfo;
 				eventInfo.m_code = code;
 
@@ -220,6 +239,7 @@ namespace Mac {
 
 			if (!AddBinding(bind))
 				delete bind;
+
 			bind = nullptr;
 		}
 

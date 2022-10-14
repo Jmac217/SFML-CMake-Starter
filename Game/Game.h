@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "Window.h"
 #include "EventManager.h"
+#include "StateManager.h"
+#include "SharedContext.h"
 
 #pragma once
 
@@ -13,19 +15,19 @@ namespace Mac {
 
 		void Update();
 		void Render();
+		void LateUpdate();
 
 		sf::Time GetElapsed();
-		void RestartClock();
-
-		void MoveSprite(EventDetails* l_details);
 
 		Window* GetWindow();
 	private:
+		SharedContext m_context;
 		Window m_window;
+		StateManager m_stateManager;
 		sf::Clock m_clock;
+		sf::Time m_elapsed;
 
-		sf::Texture m_texture;
-		sf::Sprite m_sprite;
+		void RestartClock();
 	};
 
 }
