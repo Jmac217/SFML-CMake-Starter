@@ -1,11 +1,14 @@
 ﻿# CMakeList.txt : Top-Level
 #
-cmake_minimum_required (VERSION 3.23)
+cmake_minimum_required( VERSION                 3.23)
 
-# get OpenGL from local computer
-find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIRS})
+# get OpenGL from OS
+find_package(           "OpenGL"                REQUIRED)
+include_directories(    ${OPENGL_INCLUDE_DIRS})
 
 # Project
-project ("Game")
-add_subdirectory ("Game")
+project(                "Game")
+add_subdirectory(       "Game/")
+set_property(           DIRECTORY               PROPERTY
+                        VS_STARTUP_PROJECT      "Game"
+)
