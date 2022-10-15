@@ -12,7 +12,7 @@ namespace Mac {
 
 	void State_Game::OnCreate()
 	{
-		m_texture.loadFromFile("Textures/Ball.png");
+		m_texture.loadFromFile("Media/Textures/Ball.png");
 		m_sprite.setTexture(m_texture);
 		m_sprite.setPosition(0, 0);
 		m_increment = sf::Vector2f(400.0f, 400.0f);

@@ -182,7 +182,7 @@ namespace Mac {
 		std::string delimiter = ":";
 
 		std::ifstream bindings;
-		bindings.open("Resources/keys.cfg");
+		bindings.open("Media/Resources/keys.cfg");
 
 		if (!bindings.is_open())
 		{

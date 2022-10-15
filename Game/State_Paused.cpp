@@ -12,7 +12,7 @@ namespace Mac {
 	void State_Paused::OnCreate()
 	{
 		SetTransparent(true);
-		m_font.loadFromFile("Fonts/FiraCode-Bold.ttf");
+		m_font.loadFromFile("Media/Fonts/FiraCode-Bold.ttf");
 		m_text.setFont(m_font);
 		m_text.setString(sf::String("PAUSED"));
 		m_text.setCharacterSize(14);

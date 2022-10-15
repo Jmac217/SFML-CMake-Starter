@@ -16,7 +16,7 @@ namespace Mac
 
 		sf::Vector2u windowSize = m_stateManager->GetContext()->m_window->GetRenderWindow()->getSize();
 
-		m_introTexture.loadFromFile("Textures/Intro.png");
+		m_introTexture.loadFromFile("Media/Textures/Intro.png");
 		m_introSprite.setTexture(m_introTexture);
 		m_introSprite.setOrigin(
 			m_introTexture.getSize().x / 2.0f,
@@ -24,7 +24,7 @@ namespace Mac
 		);
 		m_introSprite.setPosition(windowSize.x / 2.0f, 0);
 
-		m_font.loadFromFile("Fonts/FiraCode-Bold.ttf");
+		m_font.loadFromFile("Media/Fonts/FiraCode-Bold.ttf");
 		m_text.setFont(m_font);
 		m_text.setString({ "Press SPACE to Continue" });
 		m_text.setCharacterSize(15);
