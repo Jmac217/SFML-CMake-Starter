@@ -33,6 +33,7 @@ namespace Mac
 			textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f
 		);
+		m_text.setPosition(windowSize.x / 2.0f, windowSize.y / 1.25f);
 		EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
 		eventManager->AddCallback(StateType::Intro, "Intro_Continue", &State_Intro::Continue, this);
 	}
