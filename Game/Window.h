@@ -1,11 +1,13 @@
 #pragma once
 
+#include "EventManager.h"
+
 namespace Mac {
 
-	struct Window
-	{
+	class Window {
+	public:
 		Window();
-		Window(const sf::String& title, const sf::Vector2u& size);
+		Window(const std::string& title, const sf::Vector2u& size);
 		~Window();
 
 		void BeginDraw();
@@ -15,24 +17,24 @@ namespace Mac {
 
 		bool IsDone();
 		bool IsFullscreen();
+		bool IsFocused();
 
+		void ToggleFullscreen(EventDetails* l_details);
+		void Close(EventDetails* l_details = nullptr);
+
+		sf::RenderWindow* GetRenderWindow();
+		EventManager* GetEventManager();
 		sf::Vector2u GetWindowSize();
-
-		void ToggleFullscreen();
-
-		void Draw(sf::Drawable& l_drawable);
-
 	private:
-		void Setup(const std::string title, const sf::Vector2u& size);
+		void Setup(const std::string& title, const sf::Vector2u& size);
 		void Create();
-		void Destroy();
 
 		sf::RenderWindow m_window;
+		EventManager m_eventManager;
 		sf::Vector2u m_windowSize;
-
 		std::string m_windowTitle;
-
 		bool m_isDone;
 		bool m_isFullscreen;
+		bool m_isFocused;
 	};
 }

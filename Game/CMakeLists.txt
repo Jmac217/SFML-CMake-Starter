@@ -8,26 +8,17 @@ link_directories(					# Dependencies
 									${CMAKE_CURRENT_LIST_DIR}/lib
 )
 
-add_custom_target(		copy_assets	# Visual Studio Generator from CMake [-G]
-									# Copy Fonts/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
-									${CMAKE_CURRENT_BINARY_DIR}/Fonts
-
-									# Copy Textures/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
-									${CMAKE_CURRENT_BINARY_DIR}/Textures
+add_custom_target(		copy_media	# Visual Studio Generator from CMake [-G]
+									# Copy Media/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
+									${CMAKE_CURRENT_BINARY_DIR}/Media
 
 									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
-									# Copy Fonts/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Fonts
-									$<TARGET_FILE_DIR:Game>/Fonts
-
-									# Copy Textures/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Textures
-									$<TARGET_FILE_DIR:Game>/Textures
+									# Copy Media/
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
+									$<TARGET_FILE_DIR:Game>/Media
 )
 
-									
 add_executable (		Game		# Game Executable
 									"pch.cpp"
 									"pch.h"
@@ -36,15 +27,28 @@ add_executable (		Game		# Game Executable
 									"Game.h"
 									"Window.cpp"
 									"Window.h"
+									"EventManager.cpp"
+									"EventManager.h"
+									"BaseState.h"
+									"SharedContext.h"
+									"StateManager.cpp"
+									"StateManager.h"
+									"State_Game.cpp"
+									"State_Game.h"
+									"State_Intro.cpp"
+									"State_Intro.h"
+									"State_Paused.cpp"
+									"State_Paused.h"
+									"State_MainMenu.cpp"
+									"State_MainMenu.h"
 )
 
-add_dependencies(		Game		copy_assets)
+add_dependencies(		Game		copy_media)
 
 set_property(			TARGET 		Game
-						PROPERTY 	CXX_STANDARD 20
+						PROPERTY 	CXX_STANDARD	20
 )
 
-									
 add_subdirectory(					# Submodules
 									"vendor/SFML"
 )
@@ -72,4 +76,4 @@ target_link_libraries(				# Links
 									sfml-network
 )
 
-# TODO: Add tests and install targets if needed.
+# TODO: Add tests and install targets when needed.

@@ -1,5 +1,8 @@
 ﻿#include "pch.h"
 #include "Window.h"
+#include "EventManager.h"
+#include "StateManager.h"
+#include "SharedContext.h"
 
 #pragma once
 
@@ -10,25 +13,21 @@ namespace Mac {
 		Game();
 		~Game() = default;
 
-		void HandleInput();
 		void Update();
 		void Render();
-
-		Window* GetWindow();
+		void LateUpdate();
 
 		sf::Time GetElapsed();
 
-		void RestartClock();
+		Window* GetWindow();
 	private:
-		void MoveBall();
-
+		SharedContext m_context;
 		Window m_window;
+		StateManager m_stateManager;
 		sf::Clock m_clock;
 		sf::Time m_elapsed;
 
-		sf::Texture m_ballTexture;
-		sf::Sprite m_ballSprite;
-		sf::Vector2i m_increment;
+		void RestartClock();
 	};
 
 }
