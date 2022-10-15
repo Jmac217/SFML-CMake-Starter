@@ -4,6 +4,10 @@
 #include <vector>
 #include <cstdlib>
 #include <sstream>
+#include <string>
+#include <unordered_map>
+#include <functional>
+#include <fstream>
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
