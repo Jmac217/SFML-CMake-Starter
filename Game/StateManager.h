@@ -4,6 +4,7 @@
 #include "State_MainMenu.h"
 #include "State_Game.h"
 #include "State_Paused.h"
+#include "State_GameOver.h"
 #include "SharedContext.h"
 
 namespace Mac
@@ -44,7 +45,7 @@ namespace Mac
 		void CreateState(const StateType& l_type);
 		void RemoveState(const StateType& l_type);
 
-		template<class T>
+		template<typename T>
 		void RegisterState(const StateType& l_type) {
 			m_stateFactory[l_type] = [this]() -> BaseState*
 			{

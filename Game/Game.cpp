@@ -4,7 +4,7 @@
 namespace Mac {
 
 	Game::Game()
-		: m_window("SFML Ch 5", sf::Vector2u(800, 600))
+		: m_window("SFML Ch 6", sf::Vector2u(800, 600))
 		, m_stateManager(&m_context)
 	{
 		m_clock.restart();

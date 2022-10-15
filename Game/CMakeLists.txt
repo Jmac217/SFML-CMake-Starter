@@ -3,11 +3,6 @@
 
 cmake_minimum_required(	VERSION 	3.23)
 
-link_directories(					# Dependencies
-									# copied from `extlibs/libs-msvc`
-									${CMAKE_CURRENT_LIST_DIR}/lib
-)
-
 add_custom_target(		copy_media	# Visual Studio Generator from CMake [-G]
 									# Copy Media/
 									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
@@ -22,25 +17,37 @@ add_custom_target(		copy_media	# Visual Studio Generator from CMake [-G]
 add_executable (		Game		# Game Executable
 									"pch.cpp"
 									"pch.h"
-									"Main.cpp"
-									"Game.cpp"
-									"Game.h"
-									"Window.cpp"
-									"Window.h"
+									"Anim_Base.cpp"
+									"Anim_Base.h"
+									"Anim_Directional.cpp"
+									"Anim_Directional.h"
+									"BaseState.h"
+									"Directions.h"
 									"EventManager.cpp"
 									"EventManager.h"
-									"BaseState.h"
+									"Game.cpp"
+									"Game.h"
+									"Main.cpp"
+									"ResourceManager.h"
 									"SharedContext.h"
+									"SpriteSheet.cpp"
+									"SpriteSheet.h"
 									"StateManager.cpp"
 									"StateManager.h"
 									"State_Game.cpp"
 									"State_Game.h"
+									"State_GameOver.cpp"
+									"State_GameOver.h"
 									"State_Intro.cpp"
 									"State_Intro.h"
-									"State_Paused.cpp"
-									"State_Paused.h"
 									"State_MainMenu.cpp"
 									"State_MainMenu.h"
+									"State_Paused.cpp"
+									"State_Paused.h"
+									"TextureManager.h"
+									"Utilities.h"
+									"Window.cpp"
+									"Window.h"
 )
 
 add_dependencies(		Game		copy_media)
@@ -67,6 +74,7 @@ target_link_libraries(				# Links
 									gdi32
 									ws2_32
 									winmm
+									Shlwapi
 
 									# SFML
 									sfml-system

@@ -10,6 +10,7 @@ namespace Mac {
 		RegisterState<State_MainMenu>(StateType::MainMenu);
 		RegisterState<State_Game>(StateType::Game);
 		RegisterState<State_Paused>(StateType::Paused);
+		RegisterState<State_GameOver>(StateType::GameOver);
 	}
 
 	StateManager::~StateManager()
