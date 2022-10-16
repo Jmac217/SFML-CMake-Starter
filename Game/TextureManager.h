@@ -8,7 +8,7 @@ namespace Mac {
 		: public ResourceManager<TextureManager, sf::Texture>
 	{
 		TextureManager()
-			: ResourceManager("Media/Resources/Textures.cfg")
+			: ResourceManager("textures.cfg")
 		{
 		}
 

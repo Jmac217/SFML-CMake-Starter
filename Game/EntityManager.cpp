@@ -1,22 +1,21 @@
 #include "pch.h"
 
 #include "EntityManager.h"
-#include "SharedContext.h"
+#include "System_Manager.h"
+
 
 namespace Mac {
 
-
 	EntityManager::EntityManager(
-			SharedContext* l_context
-		,	unsigned l_maxEntities
+			SystemManager* l_sysMgr
+		,	TextureManager* l_textureMgr
 	)
-		:	m_context(l_context)
-		,	m_maxEntities(l_maxEntities)
-		,	m_idCounter(0)
+		: m_idCounter(0)
+		, m_systems(l_sysMgr)
+		, m_textureManager(l_textureMgr)
 	{
-		LoadEnemyTypes("EnemyList.list");
-		RegisterEntity<Player>(EntityType::Player);
-		RegisterEntity<Enemy>(EntityType::Enemy);
+		AddComponentType<C_Position>(Component::Position);
+		AddComponentType<C_SpriteSheet>(Component::SpriteSheet);
 	}
 
 	EntityManager::~EntityManager()
@@ -24,194 +23,196 @@ namespace Mac {
 		Purge();
 	}
 
-	int EntityManager::Add(const EntityType& l_type, const std::string& l_name /*= ""*/)
+	int EntityManager::AddEntity(const Bitmask& l_mask)
 	{
-		auto i = m_entityFactory.find(l_type);
+		unsigned int entity = m_idCounter;
 
-		if (i == m_entityFactory.end())
-			return -1;
-
-		EntityBase* entity = i->second();
-		entity->m_ID = m_idCounter;
-
-		if (l_name != "")
-			entity->m_name = l_name;
-
-		m_entities.emplace(m_idCounter, entity);
-
-		if (l_type == EntityType::Enemy)
+		if (!m_entities.emplace(entity, EntityData(0, ComponentContainer())).second)
 		{
-			auto j = m_enemyTypes.find(l_name);
-			if (j != m_enemyTypes.end())
-			{
-				Enemy* enemy = (Enemy*)entity;
-				enemy->Load(j->second);
-			}
+			return -1;
 		}
 
 		++m_idCounter;
-		return m_idCounter - 1;
+
+		for (unsigned int i = 0; i < 2; ++i)
+			if (l_mask.GetBit(i))
+				AddComponent(entity, (Component)i);
+
+		m_systems->EntityModified(entity, l_mask);
+		m_systems->AddEvent(entity, (EventID)EntityEvent::Spawned);
+
+		return entity;
 	}
 
-	Mac::EntityBase* EntityManager::Find(unsigned l_ID)
+	int EntityManager::AddEntity(const std::string& l_entityFile)
 	{
-		auto i = m_entities.find(l_ID);
-
-		if (i == m_entities.end())
-			return nullptr;
-
-		return i->second;
-	}
-
-	Mac::EntityBase* EntityManager::Find(const std::string& l_name)
-	{
-		for (auto& i : m_entities)
-			if (i.second->GetName() == l_name)
-				return i.second;
-
-		return nullptr;
-	}
-
-	void EntityManager::Remove(unsigned l_ID)
-	{
-		m_entitiesToRemove.emplace_back(l_ID);
-	}
-
-	void EntityManager::Update(float l_deltaTime)
-	{
-		for (auto& i : m_entities)
-			i.second->Update(l_deltaTime);
-
-		EntityCollisionCheck();
-		ProcessRemovals();
-	}
-
-	void EntityManager::Draw()
-	{
-		sf::RenderWindow* win = m_context->m_window->GetRenderWindow();
-		sf::FloatRect viewSpace = m_context->m_window->GetViewSpace();
-
-		for (auto& i : m_entities)
-		{
-			if (!viewSpace.intersects(i.second->m_AABB))
-				continue;
-
-			i.second->Draw(win);
-		}
-	}
-
-	void EntityManager::Purge()
-	{
-		for (auto& i : m_entities)
-			delete i.second;
-
-		m_entities.clear();
-		m_idCounter = 0;
-	}
-
-	Mac::SharedContext* EntityManager::GetContext()
-	{
-		return m_context;
-	}
-
-	void EntityManager::ProcessRemovals()
-	{
-		while (m_entitiesToRemove.begin() != m_entitiesToRemove.end())
-		{
-			unsigned id = m_entitiesToRemove.back();
-			auto i = m_entities.find(id);
-
-			if (i != m_entities.end())
-			{
-				std::cout << "Discarding Entity: " << i->second->GetID() << std::endl;
-				delete i->second;
-				m_entities.erase(i);
-			}
-
-			m_entitiesToRemove.pop_back();
-		}
-	}
-
-	void EntityManager::LoadEnemyTypes(const std::string& l_name)
-	{
-
+		int EntityId = -1;
 		std::ifstream file;
 
-		file.open(Utils::GetResourceDirectory() + std::string("Media/Characters/") + l_name);
+		file.open(Utils::GetWorkingDirectory() + "Media/Entities/" + l_entityFile + ".entity");
 
-		if (!file.is_open())
-		{
-			std::cout << "! Failed loading file: " << l_name << std::endl;
-			return;
+		if (!file.is_open()) {
+			std::cout << "! Failed to load entity: " << l_entityFile << std::endl;
+			return -1;
 		}
 
 		std::string line;
 
-		while (std::getline(file, line))
-		{
+		while (std::getline(file, line)) {
+
 			if (line[0] == '|')
 				continue;
 
 			std::stringstream keystream(line);
+			std::string type;
 
-			std::string name;
-			std::string charFile;
+			keystream >> type;
 
-			keystream >> name >> charFile;
+			if (type == "Name") {
 
-			m_enemyTypes.emplace(name, charFile);
+			}
+			else if (type == "Attributes")
+			{
+
+				if (EntityId != -1)
+					continue;
+
+				Bitset set = 0;
+				Bitmask mask;
+
+				keystream >> set;
+
+				mask.SetMask(set);
+				EntityId = AddEntity(mask);
+
+				if (EntityId == -1)
+					return -1;
+			}
+			else if (type == "Component")
+			{
+
+				if (EntityId == -1)
+					continue;
+
+				unsigned int c_id = 0;
+				keystream >> c_id;
+
+				C_Base* component = GetComponent<C_Base>(EntityId, (Component)c_id);
+
+				if (!component)
+					continue;
+
+				keystream >> *component;
+
+				if (component->GetType() == Component::SpriteSheet) {
+					C_SpriteSheet* sheet = (C_SpriteSheet*)component;
+					sheet->Create(m_textureManager);
+				}
+			}
 		}
 
 		file.close();
-		
+		return EntityId;
 	}
 
-	void EntityManager::EntityCollisionCheck()
+	bool EntityManager::RemoveEntity(const EntityId& l_id)
 	{
-		if (m_entities.empty())
-			return;
+		auto itr = m_entities.find(l_id);
+		if (itr == m_entities.end())
+			return false;
 
-		for (
-			auto i = m_entities.begin();
-			std::next(i) != m_entities.end();
-			++i
-			)
-			for (
-				auto j = std::next(i);
-				j != m_entities.end();
-				++j
-				)
+		while (itr->second.second.begin() != itr->second.second.end())
+		{
+			delete itr->second.second.back();
+			itr->second.second.pop_back();
+		}
+
+		m_entities.erase(itr);
+		m_systems->RemoveEntity(l_id);
+
+		return true;
+	}
+
+	bool EntityManager::AddComponent(const EntityId& l_entity, const Component& l_component)
+	{
+		auto itr = m_entities.find(l_entity);
+		if (itr == m_entities.end())
+			return false;
+
+		if (itr->second.first.GetBit((unsigned int)l_component))
+			return false;
+
+		auto itr2 = m_cFactory.find(l_component);
+
+		if (itr2 == m_cFactory.end())
+			return false;
+
+		C_Base* component = itr2->second();
+
+		itr->second.second.emplace_back(component);
+		itr->second.first.TurnOnBit((unsigned int)l_component);
+
+		m_systems->EntityModified(l_entity, itr->second.first);
+
+		return true;
+	}
+
+	bool EntityManager::RemoveComponent(const EntityId& l_entity, const Component& l_component)
+	{
+		auto itr = m_entities.find(l_entity);
+
+		if (itr == m_entities.end())
+			return false;
+
+		if (!itr->second.first.GetBit((unsigned int)l_component))
+			return false;
+
+		auto& container = itr->second.second;
+		auto component = std::find_if(container.begin(), container.end(),
+
+		[&l_component](C_Base* c)
 			{
-				if (i->first == j->first)
-					continue;
+				return c->GetType() == l_component;
+			});
 
-				// Regular AABB bounding box collision.
-				if (i->second->m_AABB.intersects(j->second->m_AABB))
-				{
-					i->second->OnEntityCollision(j->second, false);
-					j->second->OnEntityCollision(i->second, false);
-				}
+		if (component == container.end())
+			return false;
 
-				EntityType type1 = i->second->GetType();
-				EntityType type2 = j->second->GetType();
+		delete (*component);
 
-				if (type1 == EntityType::Player || type1 == EntityType::Enemy)
-				{
-					Character* c1 = (Character*)i->second;
+		container.erase(component);
+		itr->second.first.ClearBit((unsigned int)l_component);
+		m_systems->EntityModified(l_entity, itr->second.first);
 
-					if (c1->m_attackAABB.intersects(j->second->m_AABB))
-						c1->OnEntityCollision(j->second, true);
-				}
+		return true;
+	}
 
-				if (type2 == EntityType::Player || type2 == EntityType::Enemy)
-				{
-					Character* c2 = (Character*)j->second;
+	bool EntityManager::HasComponent(const EntityId& l_entity, const Component& l_component)
+	{
+		auto itr = m_entities.find(l_entity);
+		if (itr == m_entities.end())
+			return false;
+		return itr->second.first.GetBit((unsigned int)l_component);
 
-					if (c2->m_attackAABB.intersects(i->second->m_AABB))
-						c2->OnEntityCollision(i->second, true);
-				}
+	}
 
-			}
+	void EntityManager::Purge()
+	{
+		m_systems->PurgeEntities();
+
+		for (auto& entity : m_entities)
+		{
+			for (auto& component : entity.second.second)
+				delete component;
+
+			entity.second.second.clear();
+			entity.second.first.Clear();
+		}
+
+		m_entities.clear();
+
+		m_idCounter = 0;
+
 	}
 
 }

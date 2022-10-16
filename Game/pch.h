@@ -14,6 +14,8 @@
 #include <cmath>
 #include <map>
 #include <array>
+#include <stdint.h>
+#include <queue>
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>

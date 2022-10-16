@@ -17,7 +17,6 @@ namespace Mac{
 
 	void SpriteSheet::ReleaseSheet()
 	{
-
 		m_textureManager->ReleaseResource(m_texture);
 		m_animationCurrent = nullptr;
 
@@ -28,19 +27,39 @@ namespace Mac{
 		}
 	}
 
-	sf::Vector2i SpriteSheet::GetSpriteSize() const
+	const sf::Vector2u& SpriteSheet::GetSpriteSize() const
 	{
 		return m_spriteSize;
 	}
 
-	sf::Vector2f SpriteSheet::GetSpritePosition() const
+	const sf::Vector2f& SpriteSheet::GetSpritePosition() const
 	{
 		return m_sprite.getPosition();
 	}
 
-	Direction SpriteSheet::GetDirection() const
+	Direction SpriteSheet::GetDirection()
 	{
 		return m_direction;
+	}
+
+	void SpriteSheet::SetSheetPadding(const sf::Vector2f& l_padding)
+	{
+		m_sheetPadding = l_padding;
+	}
+
+	void SpriteSheet::SetSpriteSpacing(const sf::Vector2f& l_spacing)
+	{
+		m_spriteSpacing = l_spacing;
+	}
+
+	const sf::Vector2f& SpriteSheet::GetSheetPadding() const
+	{
+		return m_sheetPadding;
+	}
+
+	const sf::Vector2f& SpriteSheet::GetSpriteSpacing() const
+	{
+		return m_spriteSpacing;
 	}
 
 	Anim_Base* SpriteSheet::GetCurrentAnim()
@@ -48,7 +67,7 @@ namespace Mac{
 		return m_animationCurrent;
 	}
 
-	void SpriteSheet::SetSpriteSize(const sf::Vector2i& l_size)
+	void SpriteSheet::SetSpriteSize(const sf::Vector2u& l_size)
 	{
 		m_spriteSize = l_size;
 		m_sprite.setOrigin(m_spriteSize.x / 2, m_spriteSize.y);
@@ -156,15 +175,13 @@ namespace Mac{
 		return false;
 	}
 
-	bool SpriteSheet::SetAnimation(
-		const std::string& l_name,
-		const bool& l_play,
-		const bool& l_loop
-	)
+	bool SpriteSheet::SetAnimation(const std::string& l_name, bool l_play, bool l_loop)
 	{
 		auto itr = m_animations.find(l_name);
+		if (itr == m_animations.end())
+			return false;
 
-		if (itr == m_animations.end() || (itr->second == m_animationCurrent))
+		if (itr->second == m_animationCurrent)
 			return false;
 
 		if (m_animationCurrent)
@@ -181,8 +198,7 @@ namespace Mac{
 		return true;
 	}
 
-	void SpriteSheet::Update(const float& l_deltaTime)
-	{
+	void SpriteSheet::Update(float l_deltaTime) {
 		m_animationCurrent->Update(l_deltaTime);
 	}
 
