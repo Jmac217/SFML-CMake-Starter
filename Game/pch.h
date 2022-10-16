@@ -11,14 +11,19 @@
 #include <functional>
 #include <fstream>
 #include <algorithm>
+#include <cmath>
+#include <map>
+#include <array>
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window.hpp>
 
 #include "Utilities.h"

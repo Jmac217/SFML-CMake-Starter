@@ -25,6 +25,7 @@ namespace Mac {
 		sf::RenderWindow* GetRenderWindow();
 		EventManager* GetEventManager();
 		sf::Vector2u GetWindowSize();
+		sf::FloatRect GetViewSpace();
 	private:
 		void Setup(const std::string& title, const sf::Vector2u& size);
 		void Create();

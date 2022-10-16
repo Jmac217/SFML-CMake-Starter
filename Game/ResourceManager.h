@@ -35,6 +35,29 @@ namespace Mac {
 			);
 		}
 
+		bool RequireResource(const std::string& l_id)
+		{	
+			auto res = Find(l_id);
+			if (res) {
+				++res->second;
+				return true;
+			}
+			
+			auto path = m_paths.find(l_id);
+			
+			if (path == m_paths.end())
+				return false;
+
+			T* resource = Load(path->second);
+
+			if (!resource)
+				return false;
+
+			m_resources.emplace(l_id, std::make_pair(resource, 1));
+
+			return true;
+		}
+
 		bool RequiresResource(const std::string& l_id)
 		{
 			auto resource = Find(l_id);

@@ -44,6 +44,11 @@ namespace Mac {
 			return m_transcendent;
 		}
 
+		sf::View& GetView()
+		{
+			return m_view;
+		}
+
 		StateManager* GetStateManager()
 		{
 			return m_stateManager;
@@ -53,6 +58,7 @@ namespace Mac {
 		StateManager* m_stateManager;
 		bool m_transparent;
 		bool m_transcendent;
+		sf::View m_view;
 
 	private:
 		friend struct StateManager;
