@@ -3,15 +3,15 @@
 
 cmake_minimum_required(	VERSION 	3.23)
 
-add_custom_target(		copy_media	# Visual Studio Generator from CMake [-G]
+add_custom_target(		copy_assets	# Visual Studio Generator from CMake [-G]
 									# Copy Media/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
-									${CMAKE_CURRENT_BINARY_DIR}/Media
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Assets
+									${CMAKE_CURRENT_BINARY_DIR}/Assets
 
 									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
 									# Copy Media/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
-									$<TARGET_FILE_DIR:Game>/Media
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Assets
+									$<TARGET_FILE_DIR:Game>/Assets
 )
 
 add_executable (		Game		# Game Executable
@@ -22,26 +22,35 @@ add_executable (		Game		# Game Executable
 									"Anim_Directional.cpp"
 									"Anim_Directional.h"
 									"BaseState.h"
-									"Character.cpp"
-									"Character.h"
+									"Bitmask.h"
+									"C_Base.h"
+									"C_Drawable.h"
+									"C_Position.h"
+									"C_SpriteSheet.h"
+									"Communicator.h"
 									"DebugOverlay.h"
 									"Directions.h"
-									"Enemy.cpp"
-									"Enemy.h"
-									"EntityBase.cpp"
-									"EntityBase.h"
+									"ECS_Types.h"
+									"EntityEvents.h"
+									"EntityMessages.h"
 									"EntityManager.cpp"
 									"EntityManager.h"
 									"EventManager.cpp"
 									"EventManager.h"
+									"Event_Queue.h"
 									"Game.cpp"
 									"Game.h"
 									"Main.cpp"
 									"Map.cpp"
 									"Map.h"
-									"Player.cpp"
-									"Player.h"
+									"Message.h"
+									"MessageHandler.h"
+									"Observer.h"
 									"ResourceManager.h"
+									"S_Base.cpp"
+									"S_Base.h"
+									"S_Renderer.cpp"
+									"S_Renderer.h"
 									"SharedContext.h"
 									"SpriteSheet.cpp"
 									"SpriteSheet.h"
@@ -57,13 +66,15 @@ add_executable (		Game		# Game Executable
 									"State_MainMenu.h"
 									"State_Paused.cpp"
 									"State_Paused.h"
+									"System_Manager.cpp"
+									"System_Manager.h"
 									"TextureManager.h"
 									"Utilities.h"
 									"Window.cpp"
 									"Window.h"
 )
 
-add_dependencies(		Game		copy_media)
+add_dependencies(		Game		copy_assets)
 
 set_property(			TARGET 		Game
 						PROPERTY 	CXX_STANDARD	20
