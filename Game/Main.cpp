@@ -1,13 +1,13 @@
-#include "pch.h"
 #include "Game.h"
 
-int main(int argc, char* argv[])
-{
-	Mac::Game game;
-	while (!game.GetWindow()->IsDone())
+void main(int argc, void** argv[]){
+	// Program entry point.
 	{
-		game.Update();
-		game.Render();
-		game.LateUpdate();
+		Game game;
+		while(!game.GetWindow()->IsDone()){
+			game.Update();
+			game.Render();
+			game.LateUpdate();
+		}
 	}
 }

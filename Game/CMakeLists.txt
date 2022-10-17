@@ -15,26 +15,29 @@ add_custom_target(		copy_assets	# Visual Studio Generator from CMake [-G]
 )
 
 add_executable (		Game		# Game Executable
-									"pch.cpp"
-									"pch.h"
 									"Anim_Base.cpp"
 									"Anim_Base.h"
 									"Anim_Directional.cpp"
 									"Anim_Directional.h"
 									"BaseState.h"
 									"Bitmask.h"
+									"CMakeLists.txt"
+									"Communicator.h"
 									"C_Base.h"
+									"C_Collidable.h"
+									"C_Controller.h"
 									"C_Drawable.h"
+									"C_Movable.h"
 									"C_Position.h"
 									"C_SpriteSheet.h"
-									"Communicator.h"
+									"C_State.h"
 									"DebugOverlay.h"
 									"Directions.h"
 									"ECS_Types.h"
 									"EntityEvents.h"
 									"EntityMessages.h"
-									"EntityManager.cpp"
-									"EntityManager.h"
+									"Entity_Manager.cpp"
+									"Entity_Manager.h"
 									"EventManager.cpp"
 									"EventManager.h"
 									"Event_Queue.h"
@@ -47,10 +50,6 @@ add_executable (		Game		# Game Executable
 									"MessageHandler.h"
 									"Observer.h"
 									"ResourceManager.h"
-									"S_Base.cpp"
-									"S_Base.h"
-									"S_Renderer.cpp"
-									"S_Renderer.h"
 									"SharedContext.h"
 									"SpriteSheet.cpp"
 									"SpriteSheet.h"
@@ -68,6 +67,20 @@ add_executable (		Game		# Game Executable
 									"State_Paused.h"
 									"System_Manager.cpp"
 									"System_Manager.h"
+									"S_Base.cpp"
+									"S_Base.h"
+									"S_Collision.cpp"
+									"S_Collision.h"
+									"S_Control.cpp"
+									"S_Control.h"
+									"S_Movement.cpp"
+									"S_Movement.h"
+									"S_Renderer.cpp"
+									"S_Renderer.h"
+									"S_SheetAnimation.cpp"
+									"S_SheetAnimation.h"
+									"S_State.cpp"
+									"S_State.h"
 									"TextureManager.h"
 									"Utilities.h"
 									"Window.cpp"
@@ -82,12 +95,6 @@ set_property(			TARGET 		Game
 
 add_subdirectory(					# Submodules
 									"vendor/SFML"
-)
-
-target_precompile_headers(
-						Game
-							PUBLIC
-									"pch.h"
 )
 
 target_link_libraries(				# Links

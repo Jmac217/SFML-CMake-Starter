@@ -1,26 +1,11 @@
 #pragma once
+using ComponentType = unsigned int;
+#define N_COMPONENT_TYPES 32
 
-namespace Mac {
+enum class Component{
+	Position = 0, SpriteSheet, State, Movable, Controller, Collidable
+};
 
-	using ComponentType = unsigned;
-
-	enum class Component
-	{
-			Position = 0
-		,	SpriteSheet
-		,	State
-		,	Movable
-		,	Controller
-		,	Collidable
-	};
-
-	enum class System
-	{
-			Renderer = 0
-		,	Movement
-		,	Collision
-		,	Control
-		,	State
-		,	SheetAnimation
-	};
-}
+enum class System{
+	Renderer = 0, Movement, Collision, Control, State, SheetAnimation
+};
