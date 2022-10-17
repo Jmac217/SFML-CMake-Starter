@@ -1,10 +1,2 @@
 #pragma once
-
-namespace Mac {
-
-	enum class Direction
-	{
-		Right = 0,
-		Left
-	};
-}
+enum class Direction{ Right = 0, Left };

@@ -1,33 +1,31 @@
-﻿#include "pch.h"
+#pragma once
 #include "Window.h"
 #include "EventManager.h"
 #include "StateManager.h"
-#include "SharedContext.h"
+#include "TextureManager.h"
+#include "EntityManager.h"
+#include <iostream>
 
-#pragma once
+class Game{
+public:
+	Game();
+	~Game();
 
-namespace Mac {
+	void Update();
+	void Render();
+	void LateUpdate();
 
-	struct Game
-	{
-		Game();
-		~Game() = default;
+	sf::Time GetElapsed();
 
-		void Update();
-		void Render();
-		void LateUpdate();
+	Window* GetWindow();
+private:
+	void RestartClock();
 
-		sf::Time GetElapsed();
-
-		Window* GetWindow();
-	private:
-		SharedContext m_context;
-		Window m_window;
-		StateManager m_stateManager;
-		sf::Clock m_clock;
-		sf::Time m_elapsed;
-
-		void RestartClock();
-	};
-
-}
+	sf::Clock m_clock;
+	sf::Time m_elapsed;
+	SharedContext m_context;
+	Window m_window;
+	EntityManager m_entityManager;
+	TextureManager m_textureManager;
+	StateManager m_stateManager;
+};

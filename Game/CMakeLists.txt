@@ -5,18 +5,16 @@ cmake_minimum_required(	VERSION 	3.23)
 
 add_custom_target(		copy_media	# Visual Studio Generator from CMake [-G]
 									# Copy Media/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
-									${CMAKE_CURRENT_BINARY_DIR}/Media
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Resources
+									${CMAKE_CURRENT_BINARY_DIR}/Resources
 
 									# CMake Project Generated from Visual Studio [Open Visual Studio Here]
 									# Copy Media/
-									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Media
-									$<TARGET_FILE_DIR:Game>/Media
+									COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Resources
+									$<TARGET_FILE_DIR:Game>/Resources
 )
 
 add_executable (		Game		# Game Executable
-									"pch.cpp"
-									"pch.h"
 									"Anim_Base.cpp"
 									"Anim_Base.h"
 									"Anim_Directional.cpp"
@@ -71,12 +69,6 @@ set_property(			TARGET 		Game
 
 add_subdirectory(					# Submodules
 									"vendor/SFML"
-)
-
-target_precompile_headers(
-						Game
-							PUBLIC
-									"pch.h"
 )
 
 target_link_libraries(				# Links

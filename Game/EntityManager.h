@@ -1,55 +1,50 @@
 #pragma once
-
+#include <unordered_map>
+#include <functional>
 #include "Player.h"
 #include "Enemy.h"
 
-namespace Mac {
+using EntityContainer = std::unordered_map<unsigned int,EntityBase*>;
+using EntityFactory = std::unordered_map<EntityType, std::function<EntityBase*(void)>>;
+using EnemyTypes = std::unordered_map<std::string,std::string>;
 
-	using EntityContainer = std::unordered_map<unsigned, EntityBase*>;
-	using EntityFactory = std::unordered_map<EntityType, std::function<EntityBase* (void)>>;
-	using EnemyTypes = std::unordered_map<std::string, std::string>;
+struct SharedContext;
 
-	// Forward Declaration
-	struct SharedContext;
+class EntityManager{
+public:
+	EntityManager(SharedContext* l_context, unsigned int l_maxEntities);
+	~EntityManager();
 
-	struct EntityManager
-	{
-		EntityManager(SharedContext* l_context, unsigned l_maxEntities);
-		~EntityManager();
+	int Add(const EntityType& l_type, const std::string& l_name = "");
+	EntityBase* Find(unsigned int l_id);
+	EntityBase* Find(const std::string& l_name);
+	void Remove(unsigned int l_id);
 
-		int Add(const EntityType& l_type, const std::string& l_name = "");
-		EntityBase* Find(unsigned l_ID);
-		EntityBase* Find(const std::string& l_name);
-		void Remove(unsigned l_ID);
+	void Update(float l_dT);
+	void Draw();
 
-		void Update(float l_deltaTime);
-		void Draw();
+	void Purge();
 
-		void Purge();
-
-		SharedContext* GetContext();
-	private:
-		template<typename T>
-		void RegisterEntity(const EntityType& l_type)
+	SharedContext* GetContext();
+private:
+	template<class T>
+	void RegisterEntity(const EntityType& l_type){
+		m_entityFactory[l_type] = [this]() -> EntityBase*
 		{
-			m_entityFactory[l_type] = [this]() -> EntityBase*
-			{
-				return new T(this);
-			};
-		}
+			return new T(this);
+		};
+	}
 
-		void ProcessRemovals();
-		void LoadEnemyTypes(const std::string& l_name);
-		void EntityCollisionCheck();
+	void ProcessRemovals();
+	void LoadEnemyTypes(const std::string& l_name);
+	void EntityCollisionCheck();
 
-		EntityContainer m_entities;
-		EnemyTypes m_enemyTypes;
-		EntityFactory m_entityFactory;
-		SharedContext* m_context;
-		unsigned m_idCounter;
-		unsigned m_maxEntities;
+	EntityContainer m_entities;
+	EnemyTypes m_enemyTypes;
+	EntityFactory m_entityFactory;
+	SharedContext* m_context;
+	unsigned int m_idCounter;
+	unsigned int m_maxEntities;
 
-		std::vector<unsigned> m_entitiesToRemove;
-	};
-
-}
+	std::vector<unsigned int> m_entitiesToRemove;
+};

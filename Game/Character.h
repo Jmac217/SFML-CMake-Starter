@@ -1,38 +1,34 @@
 #pragma once
-
 #include "EntityBase.h"
 #include "SpriteSheet.h"
 
-namespace Mac {
+class Character : public EntityBase{
+friend class EntityManager;
+public:
+	Character(EntityManager* l_entityMgr);
+	virtual ~Character();
 
-	struct Character
-		: public EntityBase
-	{
-		Character(EntityManager* l_entityManager);
-		virtual ~Character() = default;
+	void Move(const Direction& l_dir);
 
-		void Move(const Direction& l_dir);
+	void Jump();
+	void Attack();
+	void GetHurt(const int& l_damage);
 
-		void Jump();
-		void Attack();
-		void GetHurt(const int& l_damage);
+	void Load(const std::string& l_path);
 
-		void Load(const std::string& l_path);
+	virtual void OnEntityCollision(
+		EntityBase* l_collider, bool l_attack) = 0;
 
-		virtual void OnEntityCollision(EntityBase* l_collider, bool l_attack) = 0;
+	virtual void Update(float l_dT);
+	void Draw(sf::RenderWindow* l_wind);
+protected:
+	void UpdateAttackAABB();
+	void Animate();
+	SpriteSheet m_spriteSheet;
+	float m_jumpVelocity;
 
-		virtual void Update(float l_deltaTime);
+	int m_hitpoints;
 
-		void Draw(sf::RenderWindow* l_window);
-	protected:
-		void UpdateAttackAABB();
-		void Animate();
-		SpriteSheet m_spriteSheet;
-		float m_jumpVelocity;
-		int m_hitpoints;
-		sf::FloatRect m_attackAABB;
-		sf::Vector2f m_attackAABBoffset;
-	private:
-		friend class EntityManager;
-	};
-}
+	sf::FloatRect m_attackAABB;
+	sf::Vector2f m_attackAABBoffset;
+};

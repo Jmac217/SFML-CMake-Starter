@@ -1,86 +1,60 @@
-#include "pch.h"
 #include "State_Intro.h"
 #include "StateManager.h"
 
-namespace Mac
-{
+State_Intro::State_Intro(StateManager* l_stateManager)
+	: BaseState(l_stateManager){}
 
-	State_Intro::State_Intro(StateManager* l_stateManager)
-		: BaseState(l_stateManager)
-	{
-	}
+State_Intro::~State_Intro(){}
 
-	void State_Intro::OnCreate()
-	{
-		m_timePassed = 0.0f;
+void State_Intro::OnCreate(){
+	sf::Vector2u windowSize = m_stateMgr->GetContext()
+		->m_wind->GetRenderWindow()->getSize();
 
-		sf::Vector2u windowSize = m_stateManager->GetContext()->m_window->GetRenderWindow()->getSize();
+	TextureManager* textureMgr = m_stateMgr->GetContext()->m_textureManager;
+	textureMgr->RequireResource("Intro");
+	m_introSprite.setTexture(*textureMgr->GetResource("Intro"));
+	m_introSprite.setOrigin(textureMgr->GetResource("Intro")->getSize().x / 2.0f,
+							textureMgr->GetResource("Intro")->getSize().y / 2.0f);
 
-		m_introTexture.loadFromFile("Media/Textures/Intro.png");
-		m_introSprite.setTexture(m_introTexture);
-		m_introSprite.setOrigin(
-			m_introTexture.getSize().x / 2.0f,
-			m_introTexture.getSize().y / 2.0f
-		);
-		m_introSprite.setPosition(windowSize.x / 2.0f, 0);
+	m_introSprite.setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
 
-		m_font.loadFromFile("Media/Fonts/FiraCode-Bold.ttf");
-		m_text.setFont(m_font);
-		m_text.setString({ "Press SPACE to Continue" });
-		m_text.setCharacterSize(15);
-		sf::FloatRect textRect = m_text.getLocalBounds();
-		m_text.setOrigin(
-			textRect.left + textRect.width / 2.0f,
-			textRect.top + textRect.height / 2.0f
-		);
-		m_text.setPosition(windowSize.x / 2.0f, windowSize.y / 1.25f);
-		EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-		eventManager->AddCallback(StateType::Intro, "Intro_Continue", &State_Intro::Continue, this);
-	}
+	m_font.loadFromFile(Utils::GetWorkingDirectory() + "Resources/media/Fonts/arial.ttf");
+	m_text.setFont(m_font);
+	m_text.setString(sf::String("Press SPACE to continue"));
+	m_text.setCharacterSize(15);
+	sf::FloatRect textRect = m_text.getLocalBounds();
+	m_text.setOrigin(textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f);
+	m_text.setPosition(m_introSprite.getPosition().x, 
+		m_introSprite.getPosition().y + textureMgr->GetResource("Intro")->getSize().y / 1.5f);
 
-	void State_Intro::OnDestroy()
-	{
-		EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-		eventManager->RemoveCallback(StateType::Intro, "Intro_Continue");
-	}
-
-	void State_Intro::Activate()
-	{
-	}
-
-	void State_Intro::Deactivate()
-	{
-	}
-
-	void State_Intro::Update(const sf::Time& l_time)
-	{
-		if (m_timePassed < 5.0f)
-		{
-			m_timePassed += l_time.asSeconds();
-			m_introSprite.setPosition(
-				m_introSprite.getPosition().x,
-				m_introSprite.getPosition().y + (48 * l_time.asSeconds())
-			);
-		}
-	}
-
-	void State_Intro::Draw()
-	{
-		sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
-
-		window->draw(m_introSprite);
-
-		if (m_timePassed >= 5.0f)
-			window->draw(m_text);
-	}
-
-	void State_Intro::Continue(EventDetails* l_details)
-	{
-		if (m_timePassed >= 5.0f)
-		{
-			m_stateManager->SwitchTo(StateType::MainMenu);
-			m_stateManager->Remove(StateType::Intro);
-		}
-	}
-
+	EventManager* evMgr = m_stateMgr->
+		GetContext()->m_eventManager;
+	evMgr->AddCallback(StateType::Intro, "Intro_Continue",&State_Intro::Continue,this);
 }
+
+void State_Intro::OnDestroy(){
+	TextureManager* textureMgr = m_stateMgr->GetContext()->m_textureManager;
+	textureMgr->ReleaseResource("Intro");
+
+	EventManager* evMgr = m_stateMgr->
+		GetContext()->m_eventManager;
+	evMgr->RemoveCallback(StateType::Intro,"Intro_Continue");
+}
+
+void State_Intro::Draw(){
+	sf::RenderWindow* window = m_stateMgr->
+		GetContext()->m_wind->GetRenderWindow();
+
+	window->draw(m_introSprite);
+	window->draw(m_text);
+}
+
+void State_Intro::Continue(EventDetails* l_details){
+	m_stateMgr->SwitchTo(StateType::MainMenu);
+	m_stateMgr->Remove(StateType::Intro);
+}
+
+void State_Intro::Update(const sf::Time& l_time){}
+void State_Intro::Activate(){}
+void State_Intro::Deactivate(){}
