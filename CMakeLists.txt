@@ -1,6 +1,6 @@
 ﻿# CMakeList.txt : Top-Level
 #
-cmake_minimum_required( VERSION                 3.23)
+cmake_minimum_required( VERSION                 3.24)
 
 # get OpenGL from OS
 find_package(           "OpenGL"                REQUIRED)

@@ -1,7 +1,7 @@
 ﻿# Game /
 # CMakeList.txt
 
-cmake_minimum_required(	VERSION 	3.23)
+cmake_minimum_required(	VERSION 	3.24)
 
 link_directories(					# Dependencies
 									# copied from `extlibs/libs-msvc`
